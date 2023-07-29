@@ -19,8 +19,8 @@ jobs:
         run: |
           # Post reports as comments in GitHub PRs
           r2_score=$(grep -oP '(?<=R2 Score: ).*' results.txt)
-          mae=$(grep -oP '(?<=Mean Absolute Error \(MAE\): ).*' results.txt)
-          mse=$(grep -oP '(?<=Mean Squared Error \(MSE\): ).*' results.txt)
+          mae=$(grep -oP '(?<=Mean Absolute Error (MAE): ).*' results.txt)
+          mse=$(grep -oP '(?<=Mean Squared Error (MSE): ).*' results.txt)
           
           echo "## Performance" > report.md
           echo "R2 Score: $r2_score" >> report.md
