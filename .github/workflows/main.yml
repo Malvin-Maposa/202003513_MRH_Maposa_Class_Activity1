@@ -1,51 +1,24 @@
-name: Machine Learning Training Workflow
-
-on:
-  push:
-    branches:
-      - main 
-
+name: CML
+on: [push]
 jobs:
-  build:
-    runs-on: windows-latest
-
+  train-and-report:
+    runs-on: ubuntu-latest
+    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install required Python libraries
-        run: pip install -r requirements.txt
-
-      - name: Convert Jupyter Notebook to Python script
-        run: jupyter nbconvert --to script Notebook.ipynb
-
-      - name: Execute Jupyter Notebook
-        run: jupyter nbconvert --execute --inplace --ExecutePreprocessor.timeout=-1 Notebook.ipynb
-
-      - name: Train ML model
-        run: python Notebook.py
-
-      - name: Generate results.txt
+      - uses: actions/checkout@v3
+      - name: Train model
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "R2 Score: $(python -c 'from sklearn.metrics import r2_score; print(r2_score([1, 2, 3], [1, 2, 2.5]))')" > results.txt
-          echo "Mean Absolute Error (MAE): $(python -c 'from sklearn.metrics import mean_absolute_error; print(mean_absolute_error([1, 2, 3], [1, 2, 2.5]))')" >> results.txt
-          echo "Mean Squared Error (MSE): $(python -c 'from sklearn.metrics import mean_squared_error; print(mean_squared_error([1, 2, 3], [1, 2, 2.5]))')" >> results.txt
-
-      - name: Save results as an artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ML_training_results
-          path: results.txt
-
-      # Save the newly generated plot as a new artifact
-      - name: Save new actual_vs_predicted.png
-        run: mv Notebook.ipynb new_actual_vs_predicted.png
-
-      - name: Save new plot as an artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: new_actual_vs_predicted
-          path: new_actual_vs_predicted.png
-
-      - name: Clean up
-        run: rm Notebook.py
+          # Your ML workflow goes here
+          pip install -r requirements.txt
+          python script.py
+      - name: Write CML report
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Post reports as comments in GitHub PRs
+          echo '## Performance' > report.md
+          cat results.txt >> report.md
+          echo '![](./actual_vs_predicted.png "Predicted vs Actual")' >> report.md
+          cml comment create report.md
