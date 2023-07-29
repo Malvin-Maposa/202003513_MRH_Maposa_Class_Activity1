@@ -32,7 +32,7 @@ jobs:
           echo "Mean Squared Error (MSE): $(python -c 'from sklearn.metrics import mean_squared_error; print(mean_squared_error([1, 2, 3], [1, 2, 2.5]))')" >> results.txt
 
       - name: Save results as an artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ML_training_results
           path: results.txt
@@ -42,7 +42,7 @@ jobs:
         run: mv Notebook.ipynb new_actual_vs_predicted.png
 
       - name: Save new plot as an artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: new_actual_vs_predicted
           path: new_actual_vs_predicted.png
