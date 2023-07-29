@@ -41,17 +41,11 @@ jobs:
       - name: Save new actual_vs_predicted.png
         run: mv Notebook.ipynb new_actual_vs_predicted.png
 
-      - name: Generate ASCII Art of the Plot
-        run: |
-          pip install jp2a
-          jp2a new_actual_vs_predicted.png --size=40x20 --output=actual_vs_predicted_ascii.txt
-
       - name: Save new plot as an artifact
         uses: actions/upload-artifact@v3
         with:
           name: new_actual_vs_predicted
-          path: actual_vs_predicted_ascii.txt
+          path: new_actual_vs_predicted.png
 
       - name: Clean up
         run: rm Notebook.py
-      
