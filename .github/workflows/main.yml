@@ -27,8 +27,12 @@ jobs:
         run: |
           # Post reports as comments in GitHub PRs
           r2_score=$(grep -oP '(?<=R2 Score: ).*' results.txt)
+          mae=$(grep -oP '(?<=Mean Absolute Error \(MAE\): ).*' results.txt)
+          mse=$(grep -oP '(?<=Mean Squared Error \(MSE\): ).*' results.txt)
           
           echo "## Performance" > report.md
           echo "R2 Score: $r2_score" >> report.md
+          echo "Mean Absolute Error (MAE): $mae" >> report.md
+          echo "Mean Squared Error (MSE): $mse" >> report.md
           echo "![](./actual_vs_predicted.png \"Predicted vs Actual\")" >> report.md
           cml comment create report.md
