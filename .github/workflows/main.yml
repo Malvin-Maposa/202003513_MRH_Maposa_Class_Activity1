@@ -27,5 +27,4 @@ jobs:
           echo "Mean Absolute Error (MAE): $mae" >> report.md
           echo "Mean Squared Error (MSE): $mse" >> report.md
           echo "![](./actual_vs_predicted.png \"Predicted vs Actual\")" >> report.md
-          
           cml comment create report.md
