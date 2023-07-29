@@ -50,9 +50,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: new_actual_vs_predicted
-          path: 
-            - new_actual_vs_predicted.png
-            - actual_vs_predicted_ascii.txt
+          path: actual_vs_predicted_ascii.txt
 
       - name: Clean up
         run: rm Notebook.py
